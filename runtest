@@ -8,7 +8,10 @@ EXPECT="exp"
 # default program to run
 DEFPROG="./mycpp"
 # you can change the diff program by altering the assignment below
-DIFF="diff -y"
+# For comparing stdout
+STDOUTDIFF="diff -y"
+#for comparing stderr
+STDERRDIFF="diff -y"
 
 # make sure that PROG exists
 if [ ! -f $PROG ]; then
@@ -70,19 +73,16 @@ do
     fi
     # compare the expected output with the actual output
     # cmp -s has a return value of 0 if they are the same, otherwise they are different
-    echo
-    echo "  -- Comparing $EXPECT/out$index to $OUT/out$index"
     cmp -s $EXPECT/out$index $OUT/out$index
     
     # now check the return value of the cmp
     if [ $? -ne 0 ]; then
-        echo
         echo "**** Standard out   on test number $index failed ****"
-        echo
 
         # check if the output exist, if not the command did not run
         if [ -f $OUT/out$index ]; then
-            $DIFF $EXPECT/out$index $OUT/out$index | head -50
+            echo "  -- Comparing $EXPECT/out$index to $OUT/out$index"
+            $STDOUTDIFF $EXPECT/out$index $OUT/out$index
         else
             echo "Standard out file is missing or empty: $OUT/out$index"
         fi
@@ -93,19 +93,16 @@ do
 
     # compare the expected output with the actual output
     # cmp -s has a return value of 0 if they are the same, otherwise they are different
-    echo
-    echo "  -- Comparing $EXPECT/err$index to $OUT/err$index"
     cmp -s $EXPECT/err$index $OUT/err$index
 
     # now check the return value of the cmp
     if [ $? -ne 0 ]; then
-        echo
         echo "**** Standard error on test number $index failed ****"
-        echo
 
         # check if the output exist, if not the command did not run
         if [ -f $OUT/err$index ]; then
-            $DIFF $EXPECT/err$index $OUT/err$index
+            echo "  -- Comparing $EXPECT/err$index to $OUT/err$index"
+            $STDERRDIFF $EXPECT/err$index $OUT/err$index
         else
             echo "Standard error file is missing or empty: $OUT/err$index"
         fi
