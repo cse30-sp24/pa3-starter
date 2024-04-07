@@ -17,7 +17,7 @@ LIBFLAGS    = -L ./ $(LIB)
 CC      = gcc
 DEBUG	= -ggdb
 CSTD	=
-WARN	= -Wall -Wextra -Werror
+WARN	= -Wall -Wextra
 CDEFS	=
 CFLAGS	= -I. $(DEBUG) $(WARN) $(CSTD) $(CDEFS)
 
