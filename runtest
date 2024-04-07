@@ -9,9 +9,11 @@ EXPECT="exp"
 DEFPROG="./mycpp"
 # you can change the diff program by altering the assignment below
 # For comparing stdout
-STDOUTDIFF="diff -y"
+STDOUTDIFF="diff"
 #for comparing stderr
 STDERRDIFF="diff -y"
+# hexdump
+HEXDUMP="hexdump -c"
 
 # make sure that PROG exists
 if [ ! -f $PROG ]; then
@@ -81,8 +83,13 @@ do
 
         # check if the output exist, if not the command did not run
         if [ -f $OUT/out$index ]; then
-            echo "  -- Comparing $EXPECT/out$index to $OUT/out$index"
-            $STDOUTDIFF $EXPECT/out$index $OUT/out$index
+            echo "Comparing with $HEXDUMP"
+            echo "Input: $IN/data$index"
+            $HEXDUMP $IN/data$index
+            echo "Expected: $EXPECT/out$index"
+            $HEXDUMP $EXPECT/out$index
+            echo "Output: $OUT/out$index"
+            $HEXDUMP $OUT/out$index
         else
             echo "Standard out file is missing or empty: $OUT/out$index"
         fi
