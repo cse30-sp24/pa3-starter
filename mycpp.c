@@ -8,7 +8,7 @@
  * Ignores line continuation characters
  *
  * error handling:
- *     prints starting line for unterminated comments or quote sequences
+ *     prints starting line for unterminated comment sequences
  */
 
 #include <stdio.h>
